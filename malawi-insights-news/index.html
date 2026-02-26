@@ -107,8 +107,14 @@
                 </nav>
 
                 <!-- Actions -->
-                <div class="flex items-center space-x-3">
-                    <button class="p-2 text-slate-500 hover:text-slate-900 transition">
+                <div class="flex items-center space-x-3 relative">
+                    <div id="search-bar" class="hidden absolute right-0 top-16 w-72 bg-white shadow-xl rounded-lg p-3 border border-slate-200 z-50 transition-all duration-200">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                            <input type="text" id="search-input" placeholder="Search news..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                        </div>
+                    </div>
+                    <button id="search-toggle" class="p-2 text-slate-500 hover:text-slate-900 transition">
                         <i class="fas fa-search text-lg"></i>
                     </button>
                     <button class="hidden sm:block bg-slate-900 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition rounded shadow-sm">
@@ -158,7 +164,7 @@
             <!-- Placeholder Content (Will be replaced/appended by automation) -->
             
             <!-- Hero Article -->
-            <div class="lg:col-span-8 group cursor-pointer">
+            <div class="lg:col-span-8 group cursor-pointer searchable-item">
                 <div class="relative aspect-video overflow-hidden rounded-2xl mb-5 bg-slate-200 shadow-md">
                     <img src="https://picsum.photos/seed/malawi_hero/800/600" alt="Hero News" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-90"></div>
@@ -185,7 +191,7 @@
             <div class="lg:col-span-4 flex flex-col space-y-6">
                 
                 <!-- Story 1 -->
-                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition">
+                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition searchable-item">
                     <div class="flex items-center space-x-2 mb-2">
                         <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Business</span>
                         <span class="text-[10px] text-slate-400">• 3h ago</span>
@@ -197,7 +203,7 @@
                 </div>
 
                 <!-- Story 2 -->
-                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition">
+                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition searchable-item">
                     <div class="flex items-center space-x-2 mb-2">
                         <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Environment</span>
                         <span class="text-[10px] text-slate-400">• 5h ago</span>
@@ -320,6 +326,45 @@
                 console.log('PWA Service Worker supported');
             });
         }
+
+        // Search Functionality
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBar = document.getElementById('search-bar');
+        const searchInput = document.getElementById('search-input');
+
+        // Toggle Search Bar
+        searchToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchBar.classList.toggle('hidden');
+            if (!searchBar.classList.contains('hidden')) {
+                searchInput.focus();
+            }
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchBar.contains(e.target) && !searchToggle.contains(e.target)) {
+                searchBar.classList.add('hidden');
+            }
+        });
+
+        // Filter Logic
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+            
+            items.forEach(item => {
+                const title = item.querySelector('h2, h3')?.textContent.toLowerCase() || '';
+                const summary = item.querySelector('p')?.textContent.toLowerCase() || '';
+                const category = item.querySelector('span')?.textContent.toLowerCase() || '';
+                
+                if (title.includes(query) || summary.includes(query) || category.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
