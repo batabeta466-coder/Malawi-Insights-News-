@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Malawi Insights News</title>
+    <meta name="description" content="Malawi Insights News - The Heart of African Analysis. Live updates, business markets, and breaking news.">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="https://picsum.photos/192/192">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Tailwind CSS (via CDN for single-file portability) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151e2e',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-ticker {
+            animation: ticker 40s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
+
+    <!-- Top Bar -->
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <span class="hidden sm:inline">🇲🇼 The Heart of African Analysis</span>
+                <span class="hidden sm:inline text-slate-700">|</span>
+                <span id="current-date" class="font-medium text-slate-200"></span>
+            </div>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-amber-500 transition">Subscribe</a>
+                <a href="#" class="hover:text-amber-500 transition">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center group cursor-pointer" onclick="window.location.reload()">
+                    <div class="flex flex-col">
+                        <h1 class="text-3xl font-bold tracking-tight font-serif leading-none group-hover:opacity-90 transition">
+                            <span class="text-slate-900">Malawi</span>
+                            <span class="text-amber-600">Insights</span>
+                        </h1>
+                        <span class="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase mt-1">News & Analysis</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-sm font-bold text-slate-600 hover:text-amber-600 transition uppercase tracking-wide border-b-2 border-transparent hover:border-amber-600 pb-1">Politics</a>
+                    <a href="#" class="text-sm font-bold text-slate-600 hover:text-amber-600 transition uppercase tracking-wide border-b-2 border-transparent hover:border-amber-600 pb-1">Business</a>
+                    <a href="#" class="text-sm font-bold text-slate-600 hover:text-amber-600 transition uppercase tracking-wide border-b-2 border-transparent hover:border-amber-600 pb-1">Tech</a>
+                    <a href="#" class="text-sm font-bold text-slate-600 hover:text-amber-600 transition uppercase tracking-wide border-b-2 border-transparent hover:border-amber-600 pb-1">Opinion</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center space-x-3">
+                    <button class="p-2 text-slate-500 hover:text-slate-900 transition">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="hidden sm:block bg-slate-900 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition rounded shadow-sm">
+                        Subscribe
+                    </button>
+                    <button class="md:hidden p-2 text-slate-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="bg-slate-800 text-white text-sm py-2 overflow-hidden flex items-center relative z-20 border-b border-slate-700 shadow-inner">
+        <div class="bg-amber-600 text-slate-900 px-4 py-1 z-10 font-bold text-[10px] uppercase tracking-widest shadow-lg absolute left-0 h-full flex items-center">
+            Breaking
+        </div>
+        <div class="flex overflow-hidden w-full ml-24 sm:ml-32 mask-image-gradient">
+            <div class="animate-ticker whitespace-nowrap flex items-center">
+                <span class="mx-8 font-medium flex items-center text-slate-200"><span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3 animate-pulse"></span>Malawi Stock Exchange hits record high...</span>
+                <span class="mx-8 font-medium flex items-center text-slate-200"><span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3 animate-pulse"></span>New renewable energy deal signed in Lilongwe...</span>
+                <span class="mx-8 font-medium flex items-center text-slate-200"><span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3 animate-pulse"></span>Agricultural exports surge by 15% in Q1...</span>
+                <span class="mx-8 font-medium flex items-center text-slate-200"><span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-3 animate-pulse"></span>Tech hub expansion announced for Blantyre...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <!-- Section Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="h-8 w-1 bg-amber-600 rounded-full"></div>
+                <h2 class="text-2xl font-serif font-bold text-slate-900">Top Stories</h2>
+            </div>
+            <div class="flex items-center text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <span class="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span> Live Updates
+            </div>
+        </div>
+
+        <!-- THE AI LANDING PAD -->
+        <!-- This ID is critical for your automation script -->
+        <div id="news-container" class="grid lg:grid-cols-12 gap-8">
+            
+            <!-- Placeholder Content (Will be replaced/appended by automation) -->
+            
+            <!-- Hero Article -->
+            <div class="lg:col-span-8 group cursor-pointer">
+                <div class="relative aspect-video overflow-hidden rounded-2xl mb-5 bg-slate-200 shadow-md">
+                    <img src="https://picsum.photos/seed/malawi_hero/800/600" alt="Hero News" class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-6 md:p-10 w-full">
+                        <span class="inline-block bg-amber-600 text-white text-[10px] font-bold px-2 py-1 mb-3 uppercase tracking-wider rounded-sm shadow-sm">
+                            Economy
+                        </span>
+                        <h2 class="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-white leading-tight mb-3 group-hover:text-amber-400 transition">
+                            Malawi's Digital Economy Strategy: A New Era of Growth
+                        </h2>
+                        <p class="text-sm md:text-lg text-slate-300 leading-relaxed line-clamp-2 hidden sm:block max-w-3xl">
+                            The government's ambitious plan to modernize digital infrastructure is already showing promising results in rural connectivity and tech sector employment.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center text-xs text-slate-500 font-medium border-t border-slate-200 pt-4 mt-4">
+                    <span class="text-slate-900 font-bold">By Chimwemwe Banda</span>
+                    <span class="mx-2 text-slate-300">|</span>
+                    <span><i class="far fa-clock mr-1"></i> 2 hours ago</span>
+                </div>
+            </div>
+
+            <!-- Sidebar Stories -->
+            <div class="lg:col-span-4 flex flex-col space-y-6">
+                
+                <!-- Story 1 -->
+                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider">Business</span>
+                        <span class="text-[10px] text-slate-400">• 3h ago</span>
+                    </div>
+                    <h3 class="text-lg font-serif font-bold text-slate-900 leading-snug group-hover:text-amber-700 transition mb-2">
+                        MSE Market Report: Banking Sector Leads Historic Rally
+                    </h3>
+                    <p class="text-xs text-slate-500 line-clamp-2">Financial institutions drive the Malawi Stock Exchange to new heights amid positive earnings reports.</p>
+                </div>
+
+                <!-- Story 2 -->
+                <div class="group cursor-pointer bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Environment</span>
+                        <span class="text-[10px] text-slate-400">• 5h ago</span>
+                    </div>
+                    <h3 class="text-lg font-serif font-bold text-slate-900 leading-snug group-hover:text-emerald-700 transition mb-2">
+                        Lake Malawi Conservation Project Secures International Funding
+                    </h3>
+                    <p class="text-xs text-slate-500 line-clamp-2">New partnership aims to protect biodiversity and support sustainable fishing communities.</p>
+                </div>
+
+                <!-- Market Widget -->
+                <div class="bg-slate-900 rounded-xl p-5 text-white shadow-lg">
+                    <div class="flex items-center justify-between mb-4 border-b border-slate-700 pb-2">
+                        <h4 class="font-bold text-sm uppercase tracking-widest text-amber-500">Market Watch</h4>
+                        <span class="text-[10px] text-slate-400">Live Data</span>
+                    </div>
+                    <div class="space-y-3 font-mono text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">MSE All Share</span>
+                            <span class="text-emerald-400">45,231.20 <i class="fas fa-caret-up"></i></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">MWK / USD</span>
+                            <span class="text-red-400">1,750.00 <i class="fas fa-caret-down"></i></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Inflation</span>
+                            <span class="text-amber-400">28.4% <i class="fas fa-minus"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-indicator" class="hidden flex-col items-center justify-center py-16 text-slate-400">
+            <div class="w-10 h-10 border-4 border-slate-200 border-t-amber-600 rounded-full animate-spin mb-4"></div>
+            <p class="text-sm font-medium tracking-wide">Updating latest stories...</p>
+        </div>
+
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="bg-slate-950 text-slate-400 pt-16 pb-8 border-t border-slate-900 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <h2 class="text-2xl font-serif font-bold text-white mb-6 flex items-center">
+                        Malawi <span class="text-amber-600 ml-2">Insights</span>
+                    </h2>
+                    <p class="text-sm leading-relaxed max-w-md mb-8 text-slate-400">
+                        Malawi Insights News is the nation's premier digital news platform, dedicated to delivering accurate, timely, and in-depth reporting on the issues that matter most to Malawians and the global community. We bridge the gap between local events and global understanding.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center hover:bg-amber-600 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center hover:bg-amber-600 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center hover:bg-amber-600 hover:text-white transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center hover:bg-amber-600 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-800 pb-2 inline-block">Sections</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-amber-500 transition flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2 text-slate-600"></i> Politics & Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2 text-slate-600"></i> Business & Economy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2 text-slate-600"></i> Justice & Legal</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2 text-slate-600"></i> Environment</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2 text-slate-600"></i> Technology</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company & Legal -->
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-800 pb-2 inline-block">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-amber-500 transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Editorial Team</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Contact Support</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Advertise with Us</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                <p>&copy; <span id="year"></span> Malawi Insights News. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-slate-400">Sitemap</a>
+                    <a href="#" class="hover:text-slate-400">RSS Feed</a>
+                    <a href="#" class="hover:text-slate-400">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Date
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-GB', dateOptions);
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                console.log('PWA Service Worker supported');
+            });
+        }
+    </script>
+</body>
+</html>
